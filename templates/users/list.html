@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import csrf %}
+{% block title %}Staff Accounts{% endblock %}
+{% block actions %}<a class="btn" href="{{ url_for('users.create') }}">+ Add staff account</a>{% endblock %}
+{% block content %}
+<div class="card"><p class="muted">Administrators and receptionists. Doctor accounts are managed under <a href="{{ url_for('doctors.index') }}">Doctors</a>.</p>
+<div class="table-wrap"><table>
+  <tr><th>Name</th><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th></th></tr>
+  {% for u in rows %}
+  <tr><td>{{ u.full_name }}</td><td>{{ u.username }}</td><td>{{ u.email or '—' }}</td><td>{{ u.role|capitalize }}</td>
+  <td><span class="badge badge-{{ 'scheduled' if u.is_active else 'cancelled' }}">{{ 'Active' if u.is_active else 'Inactive' }}</span></td>
+  <td class="right actions">
+    <form method="post" action="{{ url_for('users.reset_password', uid=u.id) }}" onsubmit="return confirm('Generate a new temporary password?')">{{ csrf() }}<button class="btn btn-light btn-sm">Reset password</button></form>
+    {% if u.id != g.user['id'] %}<form method="post" action="{{ url_for('users.toggle', uid=u.id) }}">{{ csrf() }}<button class="btn btn-light btn-sm">{{ 'Deactivate' if u.is_active else 'Activate' }}</button></form>{% endif %}
+  </td></tr>
+  {% endfor %}
+</table></div></div>
+{% endblock %}

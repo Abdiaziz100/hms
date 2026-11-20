@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import field, textarea, csrf %}
+{% block title %}{{ 'Edit department' if editing else 'Add department' }}{% endblock %}
+{% block content %}
+<form method="post" class="card narrow">
+  {{ csrf() }}
+  {{ field('Name', 'name', d.name, required=True) }}
+  {{ textarea('Description', 'description', d.description) }}
+  <div class="form-actions"><button class="btn">Save</button><a class="btn btn-light" href="{{ url_for('departments.index') }}">Cancel</a></div>
+</form>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import csrf %}
+{% block title %}Departments{% endblock %}
+{% block actions %}{% if g.user['role'] == 'admin' %}<a class="btn" href="{{ url_for('departments.create') }}">+ Add department</a>{% endif %}{% endblock %}
+{% block content %}
+<div class="card"><div class="table-wrap"><table>
+  <tr><th>Name</th><th>Description</th><th>Doctors</th>{% if g.user['role']=='admin' %}<th></th>{% endif %}</tr>
+  {% for d in rows %}
+  <tr><td>{{ d.name }}</td><td>{{ d.description or '—' }}</td><td>{{ d.doctor_count }}</td>
+  {% if g.user['role']=='admin' %}<td class="right actions">
+    <a class="btn btn-light btn-sm" href="{{ url_for('departments.edit', did=d.id) }}">Edit</a>
+    <form method="post" action="{{ url_for('departments.delete', did=d.id) }}" onsubmit="return confirm('Delete this department?')">{{ csrf() }}<button class="btn btn-danger btn-sm">Delete</button></form>
+  </td>{% endif %}</tr>
+  {% else %}<tr><td colspan="4" class="muted center">No departments yet.</td></tr>{% endfor %}
+</table></div></div>
+{% endblock %}

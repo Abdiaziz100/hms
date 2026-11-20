@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import field, select, csrf %}
+{% block title %}Add staff account{% endblock %}
+{% block content %}
+<form method="post" class="card">
+  {{ csrf() }}
+  <div class="form-grid">
+    {{ field('Full name', 'full_name', u.full_name, required=True) }}
+    {{ field('Username', 'username', u.username, required=True) }}
+    {{ field('Email', 'email', u.email, type='email', help='Login details are emailed here.') }}
+    {{ select('Role', 'role', [('receptionist','Receptionist'),('admin','Administrator')], u.role, required=True) }}
+    {{ field('Password', 'password', '', help='Leave blank to auto-generate.') }}
+  </div>
+  <div class="form-actions"><button class="btn">Create account</button><a class="btn btn-light" href="{{ url_for('users.index') }}">Cancel</a></div>
+</form>
+{% endblock %}

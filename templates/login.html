@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import csrf %}
+{% block title %}Sign in{% endblock %}
+{% block auth %}
+<form method="post" class="stack">
+  {{ csrf() }}
+  <div class="field"><label>Username</label><input name="username" autofocus required autocomplete="username"></div>
+  <div class="field"><label>Password</label><input type="password" name="password" required autocomplete="current-password"></div>
+  <button class="btn btn-block">Sign in</button>
+  <a class="center muted" href="{{ url_for('auth.forgot') }}">Forgot password?</a>
+</form>
+{% endblock %}
