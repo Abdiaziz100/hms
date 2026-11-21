@@ -21,7 +21,7 @@ def login():
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "")
-        user = get_db().execute("SELECT * FROM users WHERE username = ? COLLATE NOCASE", (username,)).fetchone()
+        user = get_db().execute("SELECT * FROM users WHERE email = ? COLLATE NOCASE", (username,)).fetchone()
         if user and user["is_active"] and check_password_hash(user["password_hash"], password):
             session.clear()
             session.permanent = True
